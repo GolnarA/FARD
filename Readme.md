@@ -1,7 +1,6 @@
-# CLARIQ-MARL: Multi-Agent Clarifying-Question Selection
+# Multi-Agent Model for Asking Clarifying Questions Based on User Response in Conversational Search
 
-Code for the paper *Multi-Agent Model for Asking Clarifying Questions Based on User Response in
-Conversational Search*.
+Code for the paper of the same name.
 
 Given an ambiguous query, the system decides **which clarification question to ask next**. It is
 trained and evaluated on [ClariQ](https://github.com/aliannejadi/ClariQ).
