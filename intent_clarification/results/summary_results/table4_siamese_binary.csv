@@ -1,0 +1,4 @@
+label,precision,recall,f1,support
+1 (unambiguous),0.203,0.189,0.195,37
+2-4 (ambiguous; positive class),0.886,0.895,0.891,261
+macro,0.545,0.542,0.543,298

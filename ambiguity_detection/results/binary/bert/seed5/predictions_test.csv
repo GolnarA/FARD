@@ -1,0 +1,62 @@
+topic_id,initial_request,true_level,true_label,pred_label,task
+201,I would like to know more about raspberry pi,3,1,1,binary
+202,Give me information on uss carl vinson.,2,1,1,binary
+204,What is most importan rule of golf,2,1,1,binary
+206,I'm looking for wind power,3,1,1,binary
+207,Tell me about bph treatment,2,1,1,binary
+208,tell me more about Doctor Zhivago,2,1,1,binary
+209,I'm interested to know about land surveyor,3,1,1,binary
+210,golf gps,3,1,1,binary
+212,Tell me about home theater systems.,2,1,1,binary
+213,I'm looking for information on carpal tunnel syndrome,2,1,1,binary
+215,Info on maryland department of natural resources,2,1,1,binary
+216,which are famous movies where Nicolas Cage appeared?,1,0,1,binary
+218,Tell me information about solar water fountains.,2,1,1,binary
+220,I'm interested in NBA records,2,1,1,binary
+222,I'm looking for information on male menopause,2,1,1,binary
+225,I'm looking for black and gold.,4,1,1,binary
+226,Tell me about traverse city.,3,1,1,binary
+230,tell me about world's biggest dog,3,1,1,binary
+233,Tell me about hair dye.,3,1,1,binary
+235,How do you get a ham radio license?,1,0,0,binary
+237,Find me information about a lump in the throat.,2,1,1,binary
+242,cannellini beans,3,1,1,binary
+243,Find information about afghanistan flag,2,1,1,binary
+244,old town scottsdale,3,1,1,binary
+245,roosevelt island,3,1,1,binary
+247,Tell me about rain main.,2,1,1,binary
+248,What is the shelf life of an egg?,1,0,0,binary
+249,What is an occupational therapist?,2,1,1,binary
+253,What treatments are available for a tooth abscess?,2,1,0,binary
+254,Tell me about barrett's esophagus,3,1,1,binary
+255,Tell me about teddy bears.,4,1,1,binary
+257,Find information about holes by louis sachar,2,1,1,binary
+258,Find information on hip roof,2,1,1,binary
+259,What is special about Carpenter bees?,3,1,1,binary
+260,Tell me about american revolution.,2,1,1,binary
+265,What were the worst tornadoes in the USA?,2,1,0,binary
+267,What are the lyrics to feliz navidad?,1,0,0,binary
+268,What are the benefits of running?,2,1,0,binary
+269,Find information about marshall county schools.,4,1,1,binary
+270,I'm interested in sun tzu,2,1,1,binary
+271,Tell me about halloween activities for middle school,1,0,1,binary
+272,How can I interpret my dreams,3,1,1,binary
+273,Give me information on wilson's disease.,2,1,1,binary
+274,Find information on golf instruction.,2,1,1,binary
+275,Tell me about USS Cole.,2,1,1,binary
+276,how has african american music influence history,2,1,1,binary
+277,What is bewitched cast?,4,1,1,binary
+278,Find information about mister rogers,3,1,1,binary
+279,Tell me about game theory.,3,1,1,binary
+281,What is a ketogenic diet?,2,1,0,binary
+282,Tell me about nasa interplanetary missions,1,0,1,binary
+285,I'm interested in magnesium rich foods,1,0,1,binary
+288,I'm interested in Fidel Castro,3,1,1,binary
+289,tell me about benefits of yoga,1,0,1,binary
+290,Tell me about norway spruce.,2,1,1,binary
+291,tell me about sangre de cristo mountains,3,1,1,binary
+294,tell me more flowering plants,2,1,1,binary
+297,Tell me about altitude sickness.,2,1,1,binary
+298,I'm interested in the topic of medical care and jehovah's witnesses,2,1,1,binary
+299,What is pink slime in ground beef,2,1,0,binary
+300,How to compute the mean of a set of numbers,3,1,1,binary

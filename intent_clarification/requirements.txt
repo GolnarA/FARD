@@ -1,0 +1,14 @@
+torch>=2.1
+transformers>=4.40
+accelerate>=0.26            # needed for device_map="auto" when loading Llama 2 locally
+huggingface_hub>=0.20
+sentencepiece
+numpy
+pandas
+scikit-learn
+tqdm
+anthropic>=0.34
+openai>=1.30
+pyyaml
+sentence-transformers>=2.2   # LaBSE retriever for the per-question documents (falls back to TF-IDF if absent)
+# bitsandbytes               # optional: only for --llm-8bit

@@ -1,0 +1,4 @@
+model,macro_precision,macro_recall,macro_f1,source
+MuSIc,0.541,0.506,0.520,response letter only (row missing in the manuscript file)
+BERT,0.509,0.511,0.497,manuscript and response letter
+Siamese,0.545,0.542,0.543,manuscript and response letter

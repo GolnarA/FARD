@@ -1,0 +1,216 @@
+{
+  "args": {
+    "model": "siamese",
+    "name": "siamese_bert",
+    "task": "four",
+    "seed": 1,
+    "data_dir": "data",
+    "out_dir": "results",
+    "encoder": "/Users/golnar/Downloads/clarification_need/models/bert-base-uncased",
+    "max_len": 32,
+    "batch_size": 16,
+    "lr": 2e-05,
+    "margin": 0.5,
+    "triplet_epochs": 8,
+    "triplets_per_epoch": 256,
+    "proj_hidden": 256,
+    "proj_dim": 128,
+    "head_hidden": 64,
+    "head_lr": 0.001,
+    "head_epochs": 100,
+    "ft_epochs": 8,
+    "cpu": false,
+    "threads": 0
+  },
+  "info": {
+    "triplet_loss_per_epoch": [
+      0.47686783969402313,
+      0.4644224587827921,
+      0.364933661185205,
+      0.23514939448796213,
+      0.1982001457363367,
+      0.1768148746341467,
+      0.1613583960570395,
+      0.13220064248889685
+    ],
+    "selected_head_epoch": 9,
+    "dev_macro_f1": 0.4913540602345156,
+    "train_seconds": 88.3,
+    "n_parameters": 109720516
+  },
+  "environment": {
+    "python": "3.14.8",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "sklearn": "1.9.1",
+    "torch": "2.14.1",
+    "transformers": "5.19.0",
+    "device": "cpu"
+  },
+  "wall_seconds": 90.4,
+  "metrics": {
+    "dev": {
+      "n": 50,
+      "labels": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label_names": [
+        "level_1",
+        "level_2",
+        "level_3",
+        "level_4"
+      ],
+      "confusion_matrix": [
+        [
+          1,
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          16,
+          5,
+          0
+        ],
+        [
+          0,
+          11,
+          5,
+          0
+        ],
+        [
+          0,
+          0,
+          5,
+          4
+        ]
+      ],
+      "per_class": [
+        {
+          "label": 1,
+          "name": "level_1",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "support": 4
+        },
+        {
+          "label": 2,
+          "name": "level_2",
+          "precision": 0.5333333333333333,
+          "recall": 0.7619047619047619,
+          "f1": 0.6274509803921569,
+          "support": 21
+        },
+        {
+          "label": 3,
+          "name": "level_3",
+          "precision": 0.3333333333333333,
+          "recall": 0.3125,
+          "f1": 0.3225806451612903,
+          "support": 16
+        },
+        {
+          "label": 4,
+          "name": "level_4",
+          "precision": 1.0,
+          "recall": 0.4444444444444444,
+          "f1": 0.6153846153846154,
+          "support": 9
+        }
+      ],
+      "accuracy": 0.52,
+      "macro_precision": 0.7166666666666666,
+      "macro_recall": 0.44221230158730157,
+      "macro_f1": 0.4913540602345156,
+      "weighted_precision": 0.5906666666666667,
+      "weighted_recall": 0.52,
+      "weighted_f1": 0.5095244489855496
+    },
+    "test": {
+      "n": 61,
+      "labels": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label_names": [
+        "level_1",
+        "level_2",
+        "level_3",
+        "level_4"
+      ],
+      "confusion_matrix": [
+        [
+          2,
+          5,
+          1,
+          0
+        ],
+        [
+          0,
+          22,
+          8,
+          1
+        ],
+        [
+          2,
+          6,
+          10,
+          0
+        ],
+        [
+          0,
+          2,
+          2,
+          0
+        ]
+      ],
+      "per_class": [
+        {
+          "label": 1,
+          "name": "level_1",
+          "precision": 0.5,
+          "recall": 0.25,
+          "f1": 0.3333333333333333,
+          "support": 8
+        },
+        {
+          "label": 2,
+          "name": "level_2",
+          "precision": 0.6285714285714286,
+          "recall": 0.7096774193548387,
+          "f1": 0.6666666666666666,
+          "support": 31
+        },
+        {
+          "label": 3,
+          "name": "level_3",
+          "precision": 0.47619047619047616,
+          "recall": 0.5555555555555556,
+          "f1": 0.5128205128205128,
+          "support": 18
+        },
+        {
+          "label": 4,
+          "name": "level_4",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 4
+        }
+      ],
+      "accuracy": 0.5573770491803278,
+      "macro_precision": 0.4011904761904762,
+      "macro_recall": 0.3788082437275986,
+      "macro_f1": 0.3782051282051282,
+      "weighted_precision": 0.5255269320843091,
+      "weighted_recall": 0.5573770491803278,
+      "weighted_f1": 0.533837746952501
+    }
+  }
+}

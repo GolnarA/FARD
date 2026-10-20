@@ -1,0 +1,142 @@
+{
+  "args": {
+    "model": "finetune",
+    "name": "bert",
+    "task": "binary",
+    "seed": 1,
+    "data_dir": "data",
+    "out_dir": "results",
+    "encoder": "/Users/golnar/Downloads/clarification_need/models/bert-base-uncased",
+    "max_len": 32,
+    "batch_size": 16,
+    "lr": 2e-05,
+    "margin": 0.5,
+    "triplet_epochs": 8,
+    "triplets_per_epoch": 256,
+    "proj_hidden": 256,
+    "proj_dim": 128,
+    "head_hidden": 64,
+    "head_lr": 0.001,
+    "head_epochs": 100,
+    "ft_epochs": 8,
+    "cpu": false,
+    "threads": 0
+  },
+  "info": {
+    "selected_epoch": 4,
+    "dev_macro_f1": 0.7508305647840532,
+    "train_seconds": 32.2,
+    "n_parameters": 109483778
+  },
+  "environment": {
+    "python": "3.14.8",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "sklearn": "1.9.1",
+    "torch": "2.14.1",
+    "transformers": "5.19.0",
+    "device": "cpu"
+  },
+  "wall_seconds": 34.9,
+  "metrics": {
+    "dev": {
+      "n": 50,
+      "labels": [
+        0,
+        1
+      ],
+      "label_names": [
+        "clear",
+        "needs_clarification"
+      ],
+      "confusion_matrix": [
+        [
+          4,
+          0
+        ],
+        [
+          6,
+          40
+        ]
+      ],
+      "per_class": [
+        {
+          "label": 0,
+          "name": "clear",
+          "precision": 0.4,
+          "recall": 1.0,
+          "f1": 0.5714285714285714,
+          "support": 4
+        },
+        {
+          "label": 1,
+          "name": "needs_clarification",
+          "precision": 1.0,
+          "recall": 0.8695652173913043,
+          "f1": 0.9302325581395349,
+          "support": 46
+        }
+      ],
+      "accuracy": 0.88,
+      "macro_precision": 0.7,
+      "macro_recall": 0.9347826086956521,
+      "macro_f1": 0.7508305647840532,
+      "weighted_precision": 0.9520000000000001,
+      "weighted_recall": 0.88,
+      "weighted_f1": 0.9015282392026578,
+      "positive_class": "needs_clarification",
+      "positive_precision": 1.0,
+      "positive_recall": 0.8695652173913043,
+      "positive_f1": 0.9302325581395349
+    },
+    "test": {
+      "n": 61,
+      "labels": [
+        0,
+        1
+      ],
+      "label_names": [
+        "clear",
+        "needs_clarification"
+      ],
+      "confusion_matrix": [
+        [
+          3,
+          5
+        ],
+        [
+          10,
+          43
+        ]
+      ],
+      "per_class": [
+        {
+          "label": 0,
+          "name": "clear",
+          "precision": 0.23076923076923078,
+          "recall": 0.375,
+          "f1": 0.2857142857142857,
+          "support": 8
+        },
+        {
+          "label": 1,
+          "name": "needs_clarification",
+          "precision": 0.8958333333333334,
+          "recall": 0.8113207547169812,
+          "f1": 0.8514851485148515,
+          "support": 53
+        }
+      ],
+      "accuracy": 0.7540983606557377,
+      "macro_precision": 0.563301282051282,
+      "macro_recall": 0.5931603773584906,
+      "macro_f1": 0.5685997171145686,
+      "weighted_precision": 0.8086118116855823,
+      "weighted_recall": 0.7540983606557377,
+      "weighted_f1": 0.7772856910983839,
+      "positive_class": "needs_clarification",
+      "positive_precision": 0.8958333333333334,
+      "positive_recall": 0.8113207547169812,
+      "positive_f1": 0.8514851485148515
+    }
+  }
+}

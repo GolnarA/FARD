@@ -1,0 +1,12 @@
+row,configuration,rewrite,hyp_response,rag_doc,windows,rl,mrr,ndcg@3,ndcg@5,params_m
+1,Full model,1,1,1,"1,2,3,4,full",1,0.333,0.270,0.278,472.6
+2,w/o hypothetical response,1,0,1,"1,2,3,4,full",1,0.330,0.268,0.275,472.6
+3,w/o question rewriting,0,1,1,"1,2,3,4,full",1,0.332,0.270,0.277,472.6
+4,w/o pseudo-turn,0,0,1,"1,2,3,4,full",1,0.328,0.266,0.274,472.6
+5,w/o response documents,1,1,0,"1,2,3,4,full",1,0.330,0.269,0.276,472.6
+6,2 windows,1,1,1,"1,full",1,0.328,0.267,0.274,471.7
+7,Single agent,1,1,1,full,1,0.325,0.267,0.269,471.4
+8,"5 agents, no windowing",1,1,1,full x5,1,0.326,0.269,0.272,472.6
+9,"Single agent, matched params",1,1,1,full,1,0.326,0.268,0.272,472.6
+10,"Multi-window, no RL",1,1,1,"1,2,3,4,full",0,0.328,0.266,0.273,472.6
+11,Text-only response-aware,0,0,0,full,0,0.310,0.250,0.257,471.4

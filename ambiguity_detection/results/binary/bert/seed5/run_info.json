@@ -1,0 +1,142 @@
+{
+  "args": {
+    "model": "finetune",
+    "name": "bert",
+    "task": "binary",
+    "seed": 5,
+    "data_dir": "data",
+    "out_dir": "results",
+    "encoder": "/Users/golnar/Downloads/clarification_need/models/bert-base-uncased",
+    "max_len": 32,
+    "batch_size": 16,
+    "lr": 2e-05,
+    "margin": 0.5,
+    "triplet_epochs": 8,
+    "triplets_per_epoch": 256,
+    "proj_hidden": 256,
+    "proj_dim": 128,
+    "head_hidden": 64,
+    "head_lr": 0.001,
+    "head_epochs": 100,
+    "ft_epochs": 8,
+    "cpu": false,
+    "threads": 0
+  },
+  "info": {
+    "selected_epoch": 3,
+    "dev_macro_f1": 0.7789566755083996,
+    "train_seconds": 30.9,
+    "n_parameters": 109483778
+  },
+  "environment": {
+    "python": "3.14.8",
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "sklearn": "1.9.1",
+    "torch": "2.14.1",
+    "transformers": "5.19.0",
+    "device": "cpu"
+  },
+  "wall_seconds": 33.0,
+  "metrics": {
+    "dev": {
+      "n": 50,
+      "labels": [
+        0,
+        1
+      ],
+      "label_names": [
+        "clear",
+        "needs_clarification"
+      ],
+      "confusion_matrix": [
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          41
+        ]
+      ],
+      "per_class": [
+        {
+          "label": 0,
+          "name": "clear",
+          "precision": 0.4444444444444444,
+          "recall": 1.0,
+          "f1": 0.6153846153846154,
+          "support": 4
+        },
+        {
+          "label": 1,
+          "name": "needs_clarification",
+          "precision": 1.0,
+          "recall": 0.8913043478260869,
+          "f1": 0.9425287356321839,
+          "support": 46
+        }
+      ],
+      "accuracy": 0.9,
+      "macro_precision": 0.7222222222222222,
+      "macro_recall": 0.9456521739130435,
+      "macro_f1": 0.7789566755083996,
+      "weighted_precision": 0.9555555555555556,
+      "weighted_recall": 0.9,
+      "weighted_f1": 0.9163572060123784,
+      "positive_class": "needs_clarification",
+      "positive_precision": 1.0,
+      "positive_recall": 0.8913043478260869,
+      "positive_f1": 0.9425287356321839
+    },
+    "test": {
+      "n": 61,
+      "labels": [
+        0,
+        1
+      ],
+      "label_names": [
+        "clear",
+        "needs_clarification"
+      ],
+      "confusion_matrix": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          48
+        ]
+      ],
+      "per_class": [
+        {
+          "label": 0,
+          "name": "clear",
+          "precision": 0.375,
+          "recall": 0.375,
+          "f1": 0.375,
+          "support": 8
+        },
+        {
+          "label": 1,
+          "name": "needs_clarification",
+          "precision": 0.9056603773584906,
+          "recall": 0.9056603773584906,
+          "f1": 0.9056603773584906,
+          "support": 53
+        }
+      ],
+      "accuracy": 0.8360655737704918,
+      "macro_precision": 0.6403301886792453,
+      "macro_recall": 0.6403301886792453,
+      "macro_f1": 0.6403301886792453,
+      "weighted_precision": 0.8360655737704918,
+      "weighted_recall": 0.8360655737704918,
+      "weighted_f1": 0.8360655737704918,
+      "positive_class": "needs_clarification",
+      "positive_precision": 0.9056603773584906,
+      "positive_recall": 0.9056603773584906,
+      "positive_f1": 0.9056603773584906
+    }
+  }
+}

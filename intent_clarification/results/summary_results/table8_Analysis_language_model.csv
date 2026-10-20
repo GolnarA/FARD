@@ -1,0 +1,4 @@
+model,mrr,ndcg@3,ndcg@5
+FARD-BERT,0.329,0.268,0.277
+FARD-LaBSE,0.333,0.270,0.278
+FARD-Llama2,0.326,0.267,0.275

@@ -1,0 +1,5 @@
+model,task,macro_f1
+Siamese,four_class,0.295
+BERT,four_class,0.249
+Siamese,binary,0.541
+BERT,binary,0.558

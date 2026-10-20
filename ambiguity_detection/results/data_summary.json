@@ -1,0 +1,48 @@
+{
+  "instance_definition": "one unique ClariQ topic_id (initial_request) with its single clarification_need label",
+  "topic_overlap_between_splits": 0,
+  "splits": {
+    "train": {
+      "n_topics": 187,
+      "n_rows_in_original_file": 9176,
+      "level_counts": {
+        "1": 25,
+        "2": 74,
+        "3": 62,
+        "4": 26
+      },
+      "binary_counts": {
+        "clear (level 1)": 25,
+        "needs_clarification (levels 2-4)": 162
+      }
+    },
+    "dev": {
+      "n_topics": 50,
+      "n_rows_in_original_file": 2313,
+      "level_counts": {
+        "1": 4,
+        "2": 21,
+        "3": 16,
+        "4": 9
+      },
+      "binary_counts": {
+        "clear (level 1)": 4,
+        "needs_clarification (levels 2-4)": 46
+      }
+    },
+    "test": {
+      "n_topics": 61,
+      "n_rows_in_original_file": 4499,
+      "level_counts": {
+        "1": 8,
+        "2": 31,
+        "3": 18,
+        "4": 4
+      },
+      "binary_counts": {
+        "clear (level 1)": 8,
+        "needs_clarification (levels 2-4)": 53
+      }
+    }
+  }
+}

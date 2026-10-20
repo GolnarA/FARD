@@ -1,0 +1,3 @@
+model,macro_precision,macro_recall,macro_f1
+BERT,0.344,0.282,0.254
+Siamese,0.336,0.344,0.338
