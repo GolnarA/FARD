@@ -17,7 +17,7 @@ def is_affirmative(answer):
     return bool(m) and m.group(0) in AFFIRMATIVE
 
 
-def main(paths, expect=None):
+def main(paths, expect=None, expect_episodes=None):
     rows = []
     for p in paths:
         with open(p, encoding="utf-8", newline="") as f:
@@ -53,15 +53,28 @@ def main(paths, expect=None):
     only_f0 = sum(1 for t in lvl1 if facets_per_topic[t] == 0)
     print(f"level-1 topics with >= 2 real facets: {multi} of {len(lvl1)}")
     print(f"level-1 topics with only the F0000 sentinel (no episode possible): {only_f0}")
-    if expect is not None and len(ep_topics) != expect:
-        print(f"MISMATCH: the paper reports {expect} evaluation topics, these files give {len(ep_topics)}")
-        return 2
-    return 0
+    no_ep = sorted(set(need) - ep_topics, key=lambda t: (len(t), t))
+    if no_ep:
+        print(f"topics without an episode ({len(no_ep)}): {', '.join(no_ep)}")
+        print("  -> they cannot enter a facet-episode metric; state in the paper whether the reported means")
+        print("     are over the topics with episodes or over all topics (e.g. with score 0 for these).")
+
+    status = 0
+    if expect is not None and len(need) != expect:
+        print(f"MISMATCH: the paper reports {expect} topics, these files contain {len(need)}")
+        status = 2
+    if expect_episodes is not None and len(ep_topics) != expect_episodes:
+        print(f"MISMATCH: expected {expect_episodes} topics with an episode, these files give {len(ep_topics)}")
+        status = 2
+    return status
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("paths", nargs="+", help="ClariQ TSV files (train, dev and the labelled test file)")
-    ap.add_argument("--expect-topics", type=int, default=None)
+    ap.add_argument("--expect-topics", type=int, default=None,
+                    help="number of topics that must be in the files (the paper: 298)")
+    ap.add_argument("--expect-episode-topics", type=int, default=None,
+                    help="number of topics that must yield at least one evaluation episode")
     a = ap.parse_args()
-    sys.exit(main(a.paths, a.expect_topics))
+    sys.exit(main(a.paths, a.expect_topics, a.expect_episode_topics))

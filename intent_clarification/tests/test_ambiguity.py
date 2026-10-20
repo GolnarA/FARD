@@ -12,7 +12,7 @@ from collections import Counter
 import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, ROOT)
+sys.path[:0] = [ROOT, os.path.dirname(ROOT)]
 
 from intent_clarification.ambiguity.baselines import Majority, Stratified  # noqa: E402
 from intent_clarification.data.clariq_dataset import TopicLevelExample, load_topic_level  # noqa: E402

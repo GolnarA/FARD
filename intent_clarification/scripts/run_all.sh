@@ -7,7 +7,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-D=${D:-"data_files/clariq_real/train.tsv data_files/clariq_real/dev.tsv data_files/clariq_real/test.tsv"}
+D=${D:-"data_files/clariq_real/train.tsv data_files/clariq_real/dev.tsv data_files/clariq_real/test_with_labels.tsv"}
 export D
 python scripts/check_eval_topics.py $D --expect-topics 298
 

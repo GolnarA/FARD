@@ -14,7 +14,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 CLARIQ=${CLARIQ:-data_files/clariq_real}
-D=${D:-"$CLARIQ/train.tsv $CLARIQ/dev.tsv $CLARIQ/test.tsv"}
+D=${D:-"$CLARIQ/train.tsv $CLARIQ/dev.tsv $CLARIQ/test_with_labels.tsv"}
 QRELS=${QRELS:-"$CLARIQ/train.qrel $CLARIQ/dev.qrel $CLARIQ/test.qrel"}
 RUNS=${RUNS:-runs}
 SYSTEMS=${SYSTEMS:-"FARD QL BERT-NeuQS MI-Clf MMR-BERT"}

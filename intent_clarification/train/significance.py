@@ -18,7 +18,8 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path[:0] = [_ROOT, os.path.dirname(_ROOT)]  # modules are imported both flat (agents, models, ...) and as intent_clarification.*
 
 from intent_clarification.evaluation.stats import (  # noqa: E402
     compare_classification,
@@ -34,7 +35,7 @@ def fmt_p(p: float) -> str:
     return "< 0.001" if p < 0.001 else f"{p:.3f}"
 
 
-def ranking_markdown(results, records, systems, metrics, unit="facet") -> str:
+def ranking_markdown(results, records, systems, metrics, unit="topic") -> str:
     from intent_clarification.evaluation.stats import seed_summary_facet
 
     summ = seed_summary_facet if unit == "facet" else seed_summary
@@ -55,7 +56,13 @@ def ranking_markdown(results, records, systems, metrics, unit="facet") -> str:
         lines.append(f"| {s} | " + " | ".join(cells) + f" | {n_seeds} | {n_topics} |")
     lines += [
         "",
-        "### Paired comparisons (per facet, clustered by topic)",
+        "### Paired comparisons ("
+        + (
+            "per topic, scores averaged over training seeds"
+            if unit == "topic"
+            else "per facet episode, clustered by topic; sensitivity analysis, not the paper's"
+        )
+        + ")",
         "",
         "| A vs B | Metric | A | B | Δ (A−B) | Δ% | 95% CI of Δ | p (rand.) | p (Holm) | d_z [95% CI] | W/T/L | n |",
         "|---|---|---|---|---|---|---|---|---|---|---|---|",
@@ -66,7 +73,7 @@ def ranking_markdown(results, records, systems, metrics, unit="facet") -> str:
             f"{r['diff']:+.4f} | {r['rel_diff_pct']:+.1f}% | [{r['ci_low']:+.4f}, {r['ci_high']:+.4f}] | "
             f"{fmt_p(r['p_value'])} | {fmt_p(r['p_holm'])} | {r['cohens_dz']:.2f} "
             f"[{r['dz_ci_low']:.2f}, {r['dz_ci_high']:.2f}] | {r['wins']}/{r['ties']}/{r['losses']} | "
-            f"{r.get('n_facets', r['n_topics'])} facets / {r['n_topics']} topics |"
+            + (f"{r['n_facets']} facets / {r['n_topics']} topics |" if "n_facets" in r else f"{r['n_topics']} topics |")
         )
     return "\n".join(lines) + "\n"
 
@@ -113,8 +120,15 @@ def main():
     parser.add_argument(
         "--unit",
         choices=["facet", "topic"],
-        default="facet",
-        help="facet: metric per facet episode, tests clustered by topic (default)",
+        default="topic",
+        help="topic (default, the paper): one seed-averaged score per topic; "
+        "facet: per facet episode, tests clustered by topic (sensitivity analysis)",
+    )
+    parser.add_argument(
+        "--expect-topics",
+        type=int,
+        default=None,
+        help="number of topics the paper reports (298); exit status 2 if a comparison uses another number",
     )
     parser.add_argument("--n-perm", type=int, default=100_000)
     parser.add_argument("--n-boot", type=int, default=10_000)
@@ -163,6 +177,14 @@ def main():
         f.write(md)
     print(md)
     print(f"Wrote {args.out}.json and {args.out}.md")
+    if args.expect_topics is not None:
+        used = sorted({r["n_topics"] for r in results})
+        if used != [args.expect_topics]:
+            print(
+                f"MISMATCH: the paper reports {args.expect_topics} topics, the comparisons use {used}. "
+                "Topics without a facet episode (scripts/check_eval_topics.py lists them) have no score."
+            )
+            sys.exit(2)
 
 
 if __name__ == "__main__":

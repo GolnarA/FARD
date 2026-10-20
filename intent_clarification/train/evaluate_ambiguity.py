@@ -12,7 +12,8 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path[:0] = [_ROOT, os.path.dirname(_ROOT)]  # modules are imported both flat (agents, models, ...) and as intent_clarification.*
 
 from intent_clarification.evaluation.ambiguity import evaluate_records, format_confusion  # noqa: E402
 from intent_clarification.evaluation.stats import load_records, systems_in  # noqa: E402
@@ -54,17 +55,22 @@ def summary_table(reports: list, with_harmonic: bool) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser = argparse.ArgumentParser(description=(__doc__ or "").split("\n\n")[0] or None)
     parser.add_argument("--pred", nargs="+", required=True, help="prediction CSV / JSONL files")
     parser.add_argument("--systems", nargs="+", default=None, help="default: every system found")
     parser.add_argument("--binary", action="store_true", help="collapse to level 1 vs 2-4")
     parser.add_argument("--reproduce-r2", action="store_true")
+    parser.add_argument("--expect-topics", type=int, default=None,
+                        help="number of unique topics every system must have been evaluated on (the paper: 298)")
     parser.add_argument("--out", required=True, help="output prefix (.json and .md are written)")
     args = parser.parse_args()
 
     records = load_records(args.pred)
     systems = args.systems or systems_in(records)
     reports = [evaluate_records(records, s, binary=args.binary) for s in systems]
+    wrong = [(r["system"], r["n"]) for r in reports if args.expect_topics and r["n"] != args.expect_topics]
+    if wrong:
+        raise SystemExit(f"expected {args.expect_topics} topics per system, found {wrong}")
     task = "binary (level 1 vs 2-4, positive class = 2-4)" if args.binary else "four-class"
 
     md = [f"## Ambiguity detection, {task}", "", summary_table(reports, args.reproduce_r2), ""]

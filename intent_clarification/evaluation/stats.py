@@ -134,6 +134,63 @@ def topic_bootstrap(
     }
 
 
+def two_level_bootstrap(
+    ma: np.ndarray,
+    mb: np.ndarray,
+    n_resamples: int = 10_000,
+    alpha: float = 0.05,
+    rng: Optional[np.random.Generator] = None,
+    chunk: int = 500,
+) -> dict:
+    """Two-level percentile bootstrap of the paired topic-level difference A - B (Section 4-2).
+
+    ma, mb: arrays of shape (training seeds, topics) with the per-topic score of every seed of
+    system A and of system B (same topic order). Each replicate (1) draws topics with
+    replacement; the same topics are used for A and B, so the pairing is kept; and (2) draws,
+    independently for each system, its training seeds with replacement. The replicate statistic
+    is the mean over the drawn topics of (seed-mean of A - seed-mean of B). A system with a
+    single seed (e.g. the deterministic QL) simply contributes that seed every time.
+
+    Returns the percentile CI of the mean difference and of d_z (mean / sd of the drawn
+    per-topic differences).
+    """
+    ma, mb = np.atleast_2d(np.asarray(ma, float)), np.atleast_2d(np.asarray(mb, float))
+    if ma.shape[1] != mb.shape[1]:
+        raise ValueError("A and B must be scored on the same topics")
+    rng = rng or np.random.default_rng(1)
+    s_a, n_topics = ma.shape
+    s_b = mb.shape[0]
+    means, dzs = [], []
+    done = 0
+    while done < n_resamples:
+        m = min(chunk, n_resamples - done)
+        a = ma[rng.integers(0, s_a, size=(m, s_a))].mean(axis=1)  # (m, topics): seed-mean of A
+        b = mb[rng.integers(0, s_b, size=(m, s_b))].mean(axis=1)
+        d = np.take_along_axis(a - b, rng.integers(0, n_topics, size=(m, n_topics)), axis=1)
+        means.append(d.mean(axis=1))
+        sd = d.std(axis=1, ddof=1)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            dzs.append(np.where(sd > 0, d.mean(axis=1) / sd, 0.0))
+        done += m
+    means, dzs = np.concatenate(means), np.concatenate(dzs)
+    lo, hi = 100 * alpha / 2, 100 * (1 - alpha / 2)
+    return {
+        "ci_low": float(np.percentile(means, lo)),
+        "ci_high": float(np.percentile(means, hi)),
+        "dz_ci_low": float(np.percentile(dzs, lo)),
+        "dz_ci_high": float(np.percentile(dzs, hi)),
+    }
+
+
+def seed_topic_matrix(records: List[dict], system: str, metric: str, topics: Sequence[str]) -> np.ndarray:
+    """(training seeds, topics) matrix of topic scores; seeds that miss a topic are dropped."""
+    by_seed = per_seed_topic_scores(records, system, metric)
+    rows = [[sc[t] for t in topics] for _, sc in sorted(by_seed.items()) if all(t in sc for t in topics)]
+    if not rows:
+        raise ValueError(f"no training seed of {system} scores all {len(topics)} topics on {metric}")
+    return np.array(rows)
+
+
 def holm(pvalues: Sequence[float]) -> List[float]:
     """Holm-Bonferroni adjusted p-values, in the order of the input."""
     p = np.asarray(pvalues, dtype=float)
@@ -156,7 +213,15 @@ def compare_ranking(
     n_boot: int = 10_000,
     seed: int = 0,
 ) -> dict:
-    """Topic unit: one averaged score per topic."""
+    """The comparison of the paper (Section 4-2). Unit: the topic. All episodes of a topic are
+    averaged into one score, and the scores are averaged over the training seeds, so Delta is the
+    mean over topics of (A - B) on seed-averaged topic scores.
+
+      * p: two-sided paired randomization test (sign flipping of the per-topic differences);
+      * 95% CI: two-level percentile bootstrap over topics and training seeds
+        (`two_level_bootstrap`);
+      * d_z: mean of the per-topic differences divided by their standard deviation.
+    """
     sa, sb = topic_scores(records, system_a, metric), topic_scores(records, system_b, metric)
     topics = sorted(set(sa) & set(sb))
     if not topics:
@@ -165,11 +230,18 @@ def compare_ranking(
     b = np.array([sb[t] for t in topics])
     d = a - b
     rng = np.random.default_rng(seed)
-    boot = topic_bootstrap(d, n_boot, rng=rng)
+    try:
+        ma = seed_topic_matrix(records, system_a, metric, topics)
+        mb = seed_topic_matrix(records, system_b, metric, topics)
+        boot = two_level_bootstrap(ma, mb, n_boot, rng=rng)
+        boot["bootstrap"] = "topics and training seeds"
+    except ValueError:  # a system whose seeds cover different topic sets: resample topics only
+        boot = {**topic_bootstrap(d, n_boot, rng=rng), "bootstrap": "topics only"}
     return {
         "metric": metric,
         "system_a": system_a,
         "system_b": system_b,
+        "unit": "topic",
         "n_topics": len(topics),
         "only_in_a": len(set(sa) - set(sb)),
         "only_in_b": len(set(sb) - set(sa)),
@@ -207,7 +279,8 @@ def compare_ranking_facet(
     n_boot: int = 10_000,
     seed: int = 0,
 ) -> dict:
-    """The metric is the mean over facet episodes (as in Tables 6-11). Facets of a topic share
+    """Sensitivity analysis, NOT the analysis of the paper (which is topic-level, see
+    `compare_ranking`): the metric is the mean over facet episodes. Facets of a topic share
     the initial query, so inference is clustered by topic:
       * randomisation test: the two systems are swapped for all facets of a topic together
       * bootstrap: topics are resampled, each with all its facets
@@ -289,11 +362,11 @@ def run_family(
     n_perm: int = 100_000,
     n_boot: int = 10_000,
     seed: int = 0,
-    unit: str = "facet",
+    unit: str = "topic",
 ) -> List[dict]:
     """Run every comparison, with the Holm correction applied per metric over `pairs`.
-    unit="facet": per-facet metric, topic-clustered tests (default); unit="topic": one score
-    per topic."""
+    unit="topic" (default, the paper): one seed-averaged score per topic;
+    unit="facet": per-facet metric with topic-clustered tests (sensitivity analysis only)."""
     fn = compare_ranking_facet if unit == "facet" else compare_ranking
     results = []
     for metric in metrics:

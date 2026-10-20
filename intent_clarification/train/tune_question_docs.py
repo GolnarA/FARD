@@ -12,7 +12,8 @@ import random
 import sys
 from typing import Callable, Dict, List
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path[:0] = [_ROOT, os.path.dirname(_ROOT)]  # modules are imported both flat (agents, models, ...) and as intent_clarification.*
 
 import torch
 from agents.marl_system import MultiAgentSystem, build_agents

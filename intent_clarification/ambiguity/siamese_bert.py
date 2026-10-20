@@ -29,7 +29,7 @@ class TorchSettings:
     device: Optional[str] = None
     max_length: int = 32
     batch_size: int = 16
-    triplet_epochs: int = 5
+    triplet_epochs: int = 8  # "at most 8 epochs" (Section 3-3); the best epoch is chosen on the validation topics
     classifier_epochs: int = 5
     bert_epochs: int = 10
     margin: float = 0.5
@@ -162,12 +162,9 @@ class SiameseBert(_TorchModel):
         texts = [ex.initial_request for ex in train]
         labels = self._targets(train)
         rng = np.random.default_rng(self.seed)
-        optim = torch.optim.AdamW(
-            [
-                {"params": self.encoder.bert.parameters(), "lr": s.lr},
-                {"params": self.encoder.projection.parameters(), "lr": s.mlp_lr},
-            ]
-        )
+        # Section 3-3: the whole encoder (BERT + shared MLP) is trained with AdamW, lr 2e-5; only the
+        # classification head, trained afterwards on the frozen embeddings, uses lr 1e-3 (mlp_lr).
+        optim = torch.optim.AdamW(self.encoder.parameters(), lr=s.lr)
         triplet = nn.TripletMarginLoss(margin=s.margin, p=2)
         best_f1, best_state = -1.0, None
         for epoch in range(s.triplet_epochs):

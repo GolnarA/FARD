@@ -7,7 +7,7 @@
 #   ARMS="FARD T9-single" SEEDS="42 43" bash scripts/run_arms.sh
 set -euo pipefail
 
-D=${D:-"data_files/clariq_real/train.tsv data_files/clariq_real/dev.tsv data_files/clariq_real/test.tsv"}
+D=${D:-"data_files/clariq_real/train.tsv data_files/clariq_real/dev.tsv data_files/clariq_real/test_with_labels.tsv"}
 SEEDS=${SEEDS:-"42 43 44 45 46"}
 ARMS=${ARMS:?set ARMS}
 LABSE=${LABSE:-"sentence-transformers/LaBSE"}
@@ -15,10 +15,10 @@ EXTRA=${EXTRA:-""}            # e.g. "--llm-local-dir ./llama-2-13b-chat-local -
 CKPT=${CKPT:-ckpt}; RUNS=${RUNS:-runs}; OUT=${OUT:-results}
 mkdir -p "$RUNS" "$OUT"
 
-# Pre-flight: the paper evaluates 298 topics. Verify BEFORE spending GPU time.
+# Pre-flight: the paper uses 298 ClariQ topics. Verify BEFORE spending GPU time.
 if [[ -z "${SKIP_TOPIC_CHECK:-}" ]]; then
   python scripts/check_eval_topics.py $D --expect-topics 298 || {
-    echo "The files in D do not give 298 evaluation topics (see above). Fix D, or set SKIP_TOPIC_CHECK=1 to continue anyway." >&2
+    echo "The files in D do not contain 298 topics (see above). Fix D, or set SKIP_TOPIC_CHECK=1 to continue anyway." >&2
     exit 2; }
 fi
 
