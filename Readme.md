@@ -4,7 +4,7 @@ Code for *Multi-Agent Model for Asking Clarifying Questions Based on User Respon
 
 | Folder | Purpose |
 |---|---|
-| `ambiguity_detection/` | Decide whether a query needs clarification (binary and four-level). Siamese-BERT vs. BERT, RoBERTa, TF-IDF and majority baselines, 5 seeds. |
+| `ambiguity_detection/` | Decide whether a query needs clarification (binary and four-level). Siamese-BERT vs. BERT 5 seeds. |
 | `intent_clarification/` | FARD: a multi-agent actor-critic that picks the next clarifying question. A frozen Llama-2-13B-Chat writes pseudo-turns and per-question response documents. Evaluated with MRR / NDCG@3 / NDCG@5 (5-fold topic CV, significance tests). |
 
 ## Ambiguity detection
@@ -12,7 +12,7 @@ Code for *Multi-Agent Model for Asking Clarifying Questions Based on User Respon
 ```bash
 cd ambiguity_detection
 pip install -r requirements.txt
-python download_models.py      # bert-base-uncased, roberta-base -> models/
+python download_models.py      # bert-base-uncased -> models/
 python run_all.py --quick      # 1-seed smoke test
 python run_all.py              # full run -> results/
 ```
